@@ -253,6 +253,13 @@ body {
   user-select: none;
 }
 
+/* When there are 2 options, center them nicely */
+.options-grid-2 .option-btn {
+  flex: 0 1 auto;
+  max-width: 200px;
+  min-width: 140px;
+}
+
 /* When there are 3 options, let them sit nicely in a row */
 .options-grid-3 .option-btn {
   flex: 1 1 calc(33.3% - 1rem);
@@ -319,6 +326,202 @@ body {
 
 .feedback-wrong strong {
   color: #28a745;
+}
+
+/* ========== Completion Screen ========== */
+.completion-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  gap: 1.2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.completion-emoji {
+  font-size: 4rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.completion-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #4A90D9;
+}
+
+.completion-message {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.completion-stats {
+  display: flex;
+  gap: 1.2rem;
+  margin: 1rem 0;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-width: 80px;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #4A90D9;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 600;
+}
+
+.completion-btn {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  background: #4A90D9;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+  margin-top: 0.5rem;
+}
+
+.completion-btn:active {
+  transform: scale(0.95);
+}
+
+/* ========== Diktat Mode ========== */
+.diktat-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  animation: cardIn 0.3s ease-out;
+  gap: 1rem;
+}
+
+.diktat-hint {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 500;
+  text-align: center;
+}
+
+.diktat-speaker {
+  font-size: 4rem;
+  background: #e8f0fe;
+  border: 3px solid #4A90D9;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.diktat-speaker:active {
+  transform: scale(0.92);
+  background: #d0e2f7;
+}
+
+.diktat-speaker-label {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.diktat-reveal-btn {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1rem 2.5rem;
+  border: 3px solid #f0ad4e;
+  border-radius: 1rem;
+  background: #fff3e0;
+  color: #e67e22;
+  cursor: pointer;
+  transition: transform 0.15s;
+  margin-top: 0.5rem;
+}
+
+.diktat-reveal-btn:active {
+  transform: scale(0.95);
+}
+
+.diktat-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.diktat-word {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #333;
+  background: #e8f0fe;
+  padding: 0.4em 0.8em;
+  border-radius: 0.8rem;
+  border-bottom: 4px solid #4A90D9;
+}
+
+.diktat-question {
+  font-size: 1rem;
+  color: #999;
+}
+
+.diktat-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.3rem;
+}
+
+.diktat-yes,
+.diktat-no {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border: 3px solid;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: transform 0.15s;
+  min-width: 120px;
+}
+
+.diktat-yes {
+  background: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+}
+
+.diktat-no {
+  background: #f8d7da;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.diktat-yes:active,
+.diktat-no:active {
+  transform: scale(0.95);
 }
 
 /* ========== Responsive ========== */

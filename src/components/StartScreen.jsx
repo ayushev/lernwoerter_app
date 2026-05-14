@@ -3,11 +3,12 @@ import React from 'react';
 const categoryLabels = {
   all: { emoji: '🌟', label: 'Alle Wörter' },
   artikel: { emoji: '📝', label: 'der / die / das' },
-  'v-spelling': { emoji: '🔤', label: 'V-Wörter' },
-  spelling: { emoji: '✏️', label: 'Knifflige Wörter' }
+  'stummes-h': { emoji: '🤫', label: 'Stummes H' },
+  spelling: { emoji: '✏️', label: 'Knifflige Wörter' },
+  diktat: { emoji: '🔊', label: 'Diktat' }
 };
 
-export default function StartScreen({ onStart, onReset, repetitionCount }) {
+export default function StartScreen({ onStart, onStartDiktat, onReset, repetitionCount }) {
   return (
     <div className="start-screen">
       <div className="start-title">
@@ -21,7 +22,7 @@ export default function StartScreen({ onStart, onReset, repetitionCount }) {
           <button
             key={key}
             className="category-btn"
-            onClick={() => onStart(key)}
+            onClick={() => key === 'diktat' ? onStartDiktat() : onStart(key)}
           >
             <span className="cat-emoji">{emoji}</span>
             <span className="cat-label">{label}</span>

@@ -3,28 +3,31 @@ import { shuffle } from '../utils/shuffle';
 
 export function useWordPicker(words, getRepetitionIds) {
   const [currentWord, setCurrentWord] = useState(null);
+  const [completed, setCompleted] = useState(false);
   const seenRef = useRef(new Set());
   const queueRef = useRef([]);
+  const filteredRef = useRef([]);
 
   const pickNext = useCallback(() => {
     const repIds = getRepetitionIds();
-    const repWords = words.filter((w) => repIds.includes(w.id));
-    const unseenWords = words.filter(
+    const currentIds = filteredRef.current.map((w) => w.id);
+    const repWords = filteredRef.current.filter((w) => repIds.includes(w.id));
+    const unseenWords = filteredRef.current.filter(
       (w) => !seenRef.current.has(w.id) && !repIds.includes(w.id)
     );
 
-    // 40% chance to show a repetition word if available
+    // If all seen and no repetitions left → completed
+    if (unseenWords.length === 0 && repWords.length === 0) {
+      setCompleted(true);
+      setCurrentWord(null);
+      return null;
+    }
+
     let pool;
     if (repWords.length > 0 && (Math.random() < 0.4 || unseenWords.length === 0)) {
       pool = repWords;
-    } else if (unseenWords.length > 0) {
-      pool = unseenWords;
-    } else if (repWords.length > 0) {
-      pool = repWords;
     } else {
-      // All done — reshuffle everything
-      seenRef.current.clear();
-      pool = words;
+      pool = unseenWords;
     }
 
     if (queueRef.current.length === 0) {
@@ -35,14 +38,16 @@ export function useWordPicker(words, getRepetitionIds) {
     seenRef.current.add(next.id);
     setCurrentWord(next);
     return next;
-  }, [words, getRepetitionIds]);
+  }, [getRepetitionIds]);
 
   const startSession = useCallback((category) => {
     seenRef.current.clear();
     queueRef.current = [];
+    setCompleted(false);
     const filtered = category === 'all'
       ? words
       : words.filter((w) => w.type === category);
+    filteredRef.current = filtered;
     const shuffled = shuffle(filtered);
     queueRef.current = shuffled;
     const first = queueRef.current.pop();
@@ -52,5 +57,5 @@ export function useWordPicker(words, getRepetitionIds) {
     }
   }, [words]);
 
-  return { currentWord, pickNext, startSession };
+  return { currentWord, completed, pickNext, startSession };
 }

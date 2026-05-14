@@ -5,7 +5,7 @@ export default function WordCard({ word }) {
 
   const typeLabels = {
     artikel: 'Welcher Artikel?',
-    'v-spelling': 'Welcher Buchstabe fehlt?',
+    'stummes-h': 'Mit H oder ohne H?',
     spelling: 'Welcher Buchstabe fehlt?'
   };
 

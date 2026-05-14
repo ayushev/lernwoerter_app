@@ -7,17 +7,19 @@ import WordCard from './components/WordCard';
 import OptionButton from './components/OptionButton';
 import Celebration from './components/Celebration';
 import ProgressBar from './components/ProgressBar';
+import CompletionScreen from './components/CompletionScreen';
+import DiktatMode from './components/DiktatMode';
 import './App.css';
 
 export default function App() {
-  const [screen, setScreen] = useState('start'); // 'start' | 'quiz'
+  const [screen, setScreen] = useState('start'); // 'start' | 'quiz' | 'diktat'
   const [optionStates, setOptionStates] = useState({});
   const [answered, setAnswered] = useState(false);
   const [celebrationKey, setCelebrationKey] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   const { progress, recordCorrect, recordWrong, getRepetitionIds, resetProgress } = useProgress();
-  const { currentWord, pickNext, startSession } = useWordPicker(words, getRepetitionIds);
+  const { currentWord, completed, pickNext, startSession } = useWordPicker(words, getRepetitionIds);
 
   const handleStart = useCallback((category) => {
     setScore({ correct: 0, total: 0 });
@@ -75,14 +77,41 @@ export default function App() {
     setAnswered(false);
   }, []);
 
+  const handleStartDiktat = useCallback(() => {
+    setScore({ correct: 0, total: 0 });
+    setScreen('diktat');
+  }, []);
+
   const repetitionCount = getRepetitionIds().length;
 
   if (screen === 'start') {
     return (
       <StartScreen
         onStart={handleStart}
+        onStartDiktat={handleStartDiktat}
         onReset={handleReset}
         repetitionCount={repetitionCount}
+      />
+    );
+  }
+
+  if (screen === 'diktat') {
+    return (
+      <DiktatMode
+        words={words}
+        progress={progress}
+        recordCorrect={recordCorrect}
+        recordWrong={recordWrong}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  if (completed) {
+    return (
+      <CompletionScreen
+        score={score}
+        onBack={handleBack}
       />
     );
   }
