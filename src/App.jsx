@@ -19,7 +19,7 @@ export default function App() {
   const [celebrationKey, setCelebrationKey] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
-  const { progress, recordCorrect, recordWrong, getRepetitionIds, resetProgress } = useProgress();
+  const { progress, stats, recordCorrect, recordWrong, getRepetitionIds, resetProgress } = useProgress();
   const { currentWord, completed, pickNext, startSession } = useWordPicker(words, getRepetitionIds);
 
   const handleStart = useCallback((category) => {
@@ -93,6 +93,7 @@ export default function App() {
         onStartDiktat={handleStartDiktat}
         onReset={handleReset}
         repetitionCount={repetitionCount}
+        stats={stats}
       />
     );
   }

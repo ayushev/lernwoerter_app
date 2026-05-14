@@ -34,6 +34,30 @@ body {
   justify-content: center;
   padding: 2rem 1.5rem;
   gap: 1.5rem;
+  position: relative;
+}
+
+.persistent-stats {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.persistent-stars {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  max-width: 200px;
+  text-align: right;
+}
+
+.persistent-count {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
 }
 
 .start-title {

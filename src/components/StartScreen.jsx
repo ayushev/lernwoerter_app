@@ -8,9 +8,19 @@ const categoryLabels = {
   diktat: { emoji: '🔊', label: 'Diktat' }
 };
 
-export default function StartScreen({ onStart, onStartDiktat, onReset, repetitionCount }) {
+export default function StartScreen({ onStart, onStartDiktat, onReset, repetitionCount, stats }) {
   return (
     <div className="start-screen">
+      {stats && stats.totalCorrect > 0 && (
+        <div className="persistent-stats">
+          <span className="persistent-stars">
+            {'⭐'.repeat(Math.min(stats.totalCorrect, 30))}
+          </span>
+          <span className="persistent-count">
+            {stats.totalCorrect} richtig
+          </span>
+        </div>
+      )}
       <div className="start-title">
         <span className="start-emoji">📚</span>
         <h1>Wörter Lernen</h1>
