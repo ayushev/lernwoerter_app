@@ -9,6 +9,7 @@ import Celebration from './components/Celebration';
 import ProgressBar from './components/ProgressBar';
 import CompletionScreen from './components/CompletionScreen';
 import DiktatMode from './components/DiktatMode';
+import { playCorrectSound } from './utils/sounds';
 import './App.css';
 
 export default function App() {
@@ -48,6 +49,7 @@ export default function App() {
     setOptionStates(states);
 
     if (isCorrect) {
+      playCorrectSound();
       recordCorrect(currentWord.id);
       setCelebrationKey((k) => k + 1);
       setScore((s) => ({ correct: s.correct + 1, total: s.total + 1 }));

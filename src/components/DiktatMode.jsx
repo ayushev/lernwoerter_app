@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { playCorrectSound } from '../utils/sounds';
 
 function speak(text) {
   if (!('speechSynthesis' in window)) return;
@@ -59,6 +60,7 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
 
   const handleResult = useCallback((knew) => {
     if (knew) {
+      playCorrectSound();
       recordCorrect(current.id);
       setScore((s) => ({ correct: s.correct + 1, total: s.total + 1 }));
     } else {
