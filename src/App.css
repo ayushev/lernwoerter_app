@@ -1,0 +1,382 @@
+/* ========== Reset & Base ========== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #e8f0fe 0%, #f0e6ff 50%, #fff0f0 100%);
+  min-height: 100dvh;
+  color: #333;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== Start Screen ========== */
+.start-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  gap: 1.5rem;
+}
+
+.start-title {
+  text-align: center;
+}
+
+.start-emoji {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 0.3rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.start-title h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #4A90D9;
+  letter-spacing: -0.5px;
+}
+
+.start-subtitle {
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: 0.3rem;
+}
+
+/* ========== Category Buttons ========== */
+.category-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.category-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.3rem 1rem;
+  border: none;
+  border-radius: 1.2rem;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  min-height: 100px;
+}
+
+.category-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cat-emoji {
+  font-size: 2rem;
+}
+
+.cat-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4A4A4A;
+}
+
+.rep-info {
+  font-size: 1rem;
+  color: #e67e22;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.6rem 1.2rem;
+  background: #fff3e0;
+  border-radius: 0.8rem;
+}
+
+.reset-btn {
+  font-size: 0.85rem;
+  color: #999;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* ========== Quiz Screen ========== */
+.quiz-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4A90D9;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.6rem;
+  transition: background 0.15s;
+}
+
+.back-btn:active {
+  background: rgba(74, 144, 217, 0.1);
+}
+
+/* ========== Progress Bar ========== */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.progress-stars {
+  font-size: 1.1rem;
+}
+
+.progress-text {
+  font-weight: 600;
+}
+
+/* ========== Word Card ========== */
+.word-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  animation: cardIn 0.3s ease-out;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.word-hint {
+  font-size: 0.95rem;
+  color: #999;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.word-display {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #333;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.blank {
+  color: #4A90D9;
+  background: #e8f0fe;
+  border-radius: 0.4rem;
+  padding: 0.05em 0.3em;
+  margin: 0 0.1em;
+  border-bottom: 3px solid #4A90D9;
+}
+
+/* ========== Options Grid ========== */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-btn {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 1.2rem 1.5rem;
+  border: 3px solid #ddd;
+  border-radius: 1.2rem;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.15s, background 0.15s;
+  min-height: 60px;
+  min-width: 100px;
+  flex: 1 1 calc(50% - 1rem);
+  max-width: calc(50% - 0.5rem);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* When there are 3 options, let them sit nicely in a row */
+.options-grid-3 .option-btn {
+  flex: 1 1 calc(33.3% - 1rem);
+  max-width: calc(33.3% - 0.7rem);
+}
+
+/* When there are 5 options, 3 top + 2 bottom */
+.options-grid-5 .option-btn {
+  flex: 1 1 calc(33.3% - 1rem);
+  max-width: calc(33.3% - 0.7rem);
+}
+
+.option-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.option-btn:disabled {
+  cursor: default;
+}
+
+/* Correct state */
+.option-correct {
+  background: #d4edda !important;
+  border-color: #28a745 !important;
+  color: #155724 !important;
+  animation: popCorrect 0.3s ease-out;
+}
+
+@keyframes popCorrect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Wrong state */
+.option-wrong {
+  background: #f8d7da !important;
+  border-color: #dc3545 !important;
+  color: #721c24 !important;
+  animation: shake 0.4s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* ========== Feedback ========== */
+.feedback-wrong {
+  text-align: center;
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 1rem;
+  font-size: 1.1rem;
+  color: #856404;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.feedback-wrong strong {
+  color: #28a745;
+}
+
+/* ========== Responsive ========== */
+@media (min-width: 768px) {
+  html {
+    font-size: 20px;
+  }
+
+  .category-buttons {
+    max-width: 600px;
+  }
+
+  .quiz-screen {
+    max-width: 700px;
+  }
+
+  .word-display {
+    font-size: 2.8rem;
+  }
+
+  .option-btn {
+    font-size: 1.6rem;
+    padding: 1.5rem;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 380px) {
+  html {
+    font-size: 15px;
+  }
+
+  .word-display {
+    font-size: 1.8rem;
+  }
+}
+
+/* ========== Landscape tablet ========== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .start-emoji {
+    font-size: 2rem;
+  }
+
+  .start-title h1 {
+    font-size: 1.6rem;
+  }
+
+  .word-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .word-display {
+    font-size: 1.8rem;
+  }
+
+  .option-btn {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+  }
+}
