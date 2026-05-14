@@ -1,41 +1,23 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { playCorrectSound } from '../utils/sounds';
 
-// Audio element fallback for browsers without speechSynthesis (e.g. Kindle Silk)
-const audioRef = { current: null };
+// Shared audio element for playback
+const audioEl = { current: null };
 
-function speak(text) {
-  // Method 1: native speechSynthesis
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'de-DE';
-    utterance.rate = 0.8;
-
-    const voices = window.speechSynthesis.getVoices();
-    const deVoice = voices.find((v) => v.lang.startsWith('de'));
-    if (deVoice) utterance.voice = deVoice;
-
-    // Check if we actually have voices — if not, fall back
-    if (voices.length > 0) {
-      window.speechSynthesis.speak(utterance);
-      return;
-    }
+function getAudioElement() {
+  if (!audioEl.current) {
+    audioEl.current = new Audio();
   }
+  return audioEl.current;
+}
 
-  // Method 2: Audio element with Google Translate TTS
+function speakFromFile(wordId) {
   try {
-    const encoded = encodeURIComponent(text);
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=de&client=tw-ob`;
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-    }
-    audioRef.current.src = url;
-    audioRef.current.play().catch(() => {
-      // Audio blocked or unavailable — ignore silently
-    });
+    const audio = getAudioElement();
+    audio.src = `/audio/${wordId}.mp3`;
+    audio.play().catch(() => {});
   } catch {
-    // No audio available
+    // Audio not available
   }
 }
 
@@ -46,14 +28,6 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [finished, setFinished] = useState(false);
   const [needsTap, setNeedsTap] = useState(true);
-
-  // Load voices (some browsers load async)
-  useEffect(() => {
-    window.speechSynthesis?.getVoices();
-    const handleVoices = () => window.speechSynthesis?.getVoices();
-    window.speechSynthesis?.addEventListener?.('voiceschanged', handleVoices);
-    return () => window.speechSynthesis?.removeEventListener?.('voiceschanged', handleVoices);
-  }, []);
 
   // Initialize queue on mount
   useEffect(() => {
@@ -75,9 +49,9 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
 
   const handleSpeak = useCallback(() => {
     if (!current) return;
-    speak(getFullWord(current));
+    speakFromFile(current.id);
     setNeedsTap(false);
-  }, [current, getFullWord]);
+  }, [current]);
 
   const handleReveal = useCallback(() => {
     setRevealed(true);
