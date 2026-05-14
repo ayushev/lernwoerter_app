@@ -1,19 +1,42 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { playCorrectSound } from '../utils/sounds';
 
+// Audio element fallback for browsers without speechSynthesis (e.g. Kindle Silk)
+const audioRef = { current: null };
+
 function speak(text) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'de-DE';
-  utterance.rate = 0.8;
+  // Method 1: native speechSynthesis
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'de-DE';
+    utterance.rate = 0.8;
 
-  // Try to find a German voice
-  const voices = window.speechSynthesis.getVoices();
-  const deVoice = voices.find((v) => v.lang.startsWith('de'));
-  if (deVoice) utterance.voice = deVoice;
+    const voices = window.speechSynthesis.getVoices();
+    const deVoice = voices.find((v) => v.lang.startsWith('de'));
+    if (deVoice) utterance.voice = deVoice;
 
-  window.speechSynthesis.speak(utterance);
+    // Check if we actually have voices — if not, fall back
+    if (voices.length > 0) {
+      window.speechSynthesis.speak(utterance);
+      return;
+    }
+  }
+
+  // Method 2: Audio element with Google Translate TTS
+  try {
+    const encoded = encodeURIComponent(text);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=de&client=tw-ob`;
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+    audioRef.current.src = url;
+    audioRef.current.play().catch(() => {
+      // Audio blocked or unavailable — ignore silently
+    });
+  } catch {
+    // No audio available
+  }
 }
 
 export default function DiktatMode({ words, progress, recordCorrect, recordWrong, onBack }) {
@@ -22,6 +45,7 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [finished, setFinished] = useState(false);
+  const [needsTap, setNeedsTap] = useState(true);
 
   // Load voices (some browsers load async)
   useEffect(() => {
@@ -52,6 +76,7 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
   const handleSpeak = useCallback(() => {
     if (!current) return;
     speak(getFullWord(current));
+    setNeedsTap(false);
   }, [current, getFullWord]);
 
   const handleReveal = useCallback(() => {
@@ -81,13 +106,7 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
     setRevealed(false);
   }, [current, queue, recordCorrect, recordWrong]);
 
-  // Auto-speak when a new word appears
-  useEffect(() => {
-    if (current && !revealed && !finished) {
-      const timer = setTimeout(() => speak(getFullWord(current)), 400);
-      return () => clearTimeout(timer);
-    }
-  }, [current, revealed, finished, getFullWord]);
+  // No auto-speak — mobile browsers block autoplay without user gesture
 
   if (finished) {
     const percent = score.total > 0 ? Math.round((score.correct / score.total) * 100) : 0;
@@ -133,12 +152,16 @@ export default function DiktatMode({ words, progress, recordCorrect, recordWrong
       </div>
 
       <div className="diktat-card">
-        <p className="diktat-hint">Hör genau zu und merke dir das Wort!</p>
+        <p className="diktat-hint">
+          {needsTap ? 'Tippe auf den Lautsprecher!' : 'Hör genau zu und merke dir das Wort!'}
+        </p>
 
-        <button className="diktat-speaker" onClick={handleSpeak}>
+        <button className={`diktat-speaker ${needsTap ? 'diktat-speaker-pulse' : ''}`} onClick={handleSpeak}>
           🔊
         </button>
-        <p className="diktat-speaker-label">Nochmal hören</p>
+        <p className="diktat-speaker-label">
+          {needsTap ? 'Tippe zum Hören' : 'Nochmal hören'}
+        </p>
 
         {!revealed ? (
           <button className="diktat-reveal-btn" onClick={handleReveal}>
