@@ -24,6 +24,7 @@ export default function App() {
 
   const handleStart = useCallback((category) => {
     setScore({ correct: 0, total: 0 });
+    setCelebrationKey(0);
     startSession(category);
     setScreen('quiz');
     setOptionStates({});
